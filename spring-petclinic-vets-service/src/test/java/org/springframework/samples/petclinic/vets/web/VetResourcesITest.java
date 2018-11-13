@@ -1,30 +1,32 @@
 package org.springframework.samples.petclinic.vets.web;
 
-import com.codeborne.selenide.WebDriverRunner;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.WebDriver;
 
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
 
 import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.Condition.*;
+
+import static com.codeborne.selenide.WebDriverRunner.url;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class VetResourcesITest {
 
-    WebDriver currentWebdrive  = WebDriverRunner.getWebDriver();;
+
 
     @Test
     public void testNavigationForward() {
         open("http://localhost:8080");
 
-        assertEquals("http://localhost:8080/#!/welcome", currentWebdrive.getCurrentUrl());
+        assertEquals("http://localhost:8080/#!/welcome", url());
 
         String cssSelector = "[title='veterinarians']";
-        assertTrue($(cssSelector).exists());
-        $(cssSelector).click();
+        assertTrue($(By.cssSelector(cssSelector)).exists());
+        $(By.cssSelector(cssSelector)).click();
 
-        assertEquals("http://localhost:8080/#!/vets", currentWebdrive.getCurrentUrl());
+        assertEquals("http://localhost:8080/#!/vets", url());
     }
 
     @Test
@@ -47,7 +49,7 @@ public class VetResourcesITest {
 
         $(allOwnersSelector).click();
         sleep(3000);
-        System.out.print("CURRENT URL: " + currentWebdrive.getCurrentUrl());
+        System.out.print("CURRENT URL: " + url());
         String GeorgeFranklin = "[href='#!/owners/details/2']";
         assertTrue($(GeorgeFranklin).exists());
         $(GeorgeFranklin).click();
