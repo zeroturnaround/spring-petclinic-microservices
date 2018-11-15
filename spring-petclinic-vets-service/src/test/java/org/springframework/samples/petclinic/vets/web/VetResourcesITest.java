@@ -19,6 +19,7 @@ public class VetResourcesITest {
     @Test
     public void testNavigationForward() {
         open("http://localhost:8080");
+        $(By.tagName("title")).shouldBe(exist);
 
         assertEquals("http://localhost:8080/#!/welcome", url());
 
@@ -26,6 +27,7 @@ public class VetResourcesITest {
         assertTrue($(By.cssSelector(cssSelector)).exists());
         $(By.cssSelector(cssSelector)).click();
 
+        $(By.tagName("title")).shouldBe(exist);
         assertEquals("http://localhost:8080/#!/vets", url());
     }
 

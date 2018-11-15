@@ -17,9 +17,6 @@
     <properties>
         <docker.image.exposed.port>8081</docker.image.exposed.port>
         <docker.image.dockerfile.dir>${basedir}/../docker</docker.image.dockerfile.dir>
-        <selenium.version>3.14.0</selenium.version>
-        <selenium-htmlunit.version>2.33.0</selenium-htmlunit.version>
-
     </properties>
 
 	<dependencies>
