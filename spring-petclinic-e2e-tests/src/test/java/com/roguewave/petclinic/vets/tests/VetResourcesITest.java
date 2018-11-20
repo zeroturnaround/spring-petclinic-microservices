@@ -1,46 +1,65 @@
-package org.springframework.samples.petclinic.vets.web;
+package com.roguewave.petclinic.vets.tests;
 
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.env.Environment;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
 
 import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.Condition.*;
 
 import static com.codeborne.selenide.WebDriverRunner.url;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 
+
+@ExtendWith(SpringExtension.class)
+@SpringBootTest
 public class VetResourcesITest {
 
+    @Value("${baseUrl}")
+    public String baseUrl;
 
 
     @Test
     public void testNavigationForward() {
-        open("http://localhost:8080");
+        open(baseUrl);
+
+        System.out.println("");
         $(By.tagName("title")).shouldBe(exist);
 
-        assertEquals("http://localhost:8080/#!/welcome", url());
+        assertEquals(baseUrl + "/#!/welcome", url());
 
         String cssSelector = "[title='veterinarians']";
         assertTrue($(By.cssSelector(cssSelector)).exists());
         $(By.cssSelector(cssSelector)).click();
 
         $(By.tagName("title")).shouldBe(exist);
-        assertEquals("http://localhost:8080/#!/vets", url());
+        assertEquals(baseUrl + "/#!/vets", url());
     }
 
     @Test
     public void testVetsAreLoaded() {
-        open("http://localhost:8080/#!/vets");
+        open(baseUrl + "/#!/vets");
         sleep(5000);
         assertEquals(6, $$("[ng-repeat='vet in $ctrl.vetList']").size());
     }
 
     @Test
     public void testOwnersEditOwner() {
-        open("http://localhost:8080");
+        open(baseUrl);
 
         String ownersSelector = "[class='dropdown']";
         assertTrue($(ownersSelector).exists());
@@ -51,11 +70,9 @@ public class VetResourcesITest {
 
         $(allOwnersSelector).click();
         sleep(3000);
-        System.out.print("CURRENT URL: " + url());
         String GeorgeFranklin = "[href='#!/owners/details/2']";
         assertTrue($(GeorgeFranklin).exists());
         $(GeorgeFranklin).click();
     }
-
 
 }
