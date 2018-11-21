@@ -65,6 +65,7 @@
                                 <selenide.headless>true</selenide.headless>
                             </systemPropertyVariables>
                             <argLine>-Dspring.profiles.active=jenkins</argLine>
+                            <useSystemClassLoader>false</useSystemClassLoader>
                         </configuration>
                     </plugin>
                 </plugins>
