@@ -11,4 +11,5 @@ RUN chmod +x dockerize
 ADD ${ARTIFACT_NAME}.jar /app.jar
 RUN touch /app.jar
 EXPOSE ${EXPOSED_PORT}
-ENTRYPOINT ["java", "-XX:+UnlockExperimentalVMOptions", "-XX:+UseCGroupMemoryLimitForHeap", "-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
+RUN wget -O /qrebel-agent.jar https://hub.qrebel.com/getagent/qrebel-agent.jar
+ENTRYPOINT ["java", "-XX:+UnlockExperimentalVMOptions", "-XX:+UseCGroupMemoryLimitForHeap", "-Djava.security.egd=file:/dev/./urandom", "-jar","/app.jar"]
