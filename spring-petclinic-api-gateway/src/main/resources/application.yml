@@ -10,7 +10,3 @@ ribbon:
   eager-load:
     enabled: true
     clients: vets-service, visits-service, customers-service, api-gateway
-  ReadTimeout:100
-  ConnectTimeout:500
-  MaxAutoRetries:1
-  MaxAutoRetriesNextServer:1
