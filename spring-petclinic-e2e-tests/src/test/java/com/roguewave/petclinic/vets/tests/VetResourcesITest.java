@@ -1,6 +1,7 @@
 package com.roguewave.petclinic.vets.tests;
 
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
@@ -28,7 +29,8 @@ public class VetResourcesITest {
 
     @Test
     public void testNavigationForward() {
-        open(baseUrl);
+        beforeTest();
+        open(baseUrl + "/#!/welcome");
 
         System.out.println("");
         $(By.tagName("title")).shouldBe(exist);
@@ -45,6 +47,7 @@ public class VetResourcesITest {
 
     @Test
     public void testVetsAreLoaded() {
+        beforeTest();
         open(baseUrl + "/#!/vets");
         sleep(5000);
         assertEquals(6, $$("[ng-repeat='vet in $ctrl.vetList']").size());
@@ -52,6 +55,7 @@ public class VetResourcesITest {
 
     @Test
     public void testOwnersEditOwner() {
+        beforeTest();
         open(baseUrl);
 
         String ownersSelector = "[class='dropdown']";
@@ -66,6 +70,13 @@ public class VetResourcesITest {
         String GeorgeFranklin = "[href='#!/owners/details/2']";
         assertTrue($(GeorgeFranklin).exists());
         $(GeorgeFranklin).click();
+    }
+
+    public void beforeTest() {
+        //Temporary workaround for Zuul not wiring first request properly
+        open(baseUrl);
+        open(baseUrl + "/#!/vets");
+        open(baseUrl + "/#!/owners");
     }
 
 }
