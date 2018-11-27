@@ -56,7 +56,7 @@ public class VetResourcesITest {
     @Test
     public void testOwnersEditOwner() {
         beforeTest();
-        open(baseUrl);
+        open(baseUrl + "/#!/welcome");
 
         String ownersSelector = "[class='dropdown']";
         assertTrue($(ownersSelector).exists());
@@ -75,8 +75,12 @@ public class VetResourcesITest {
     public void beforeTest() {
         //Temporary workaround for Zuul not wiring first request properly
         open(baseUrl);
+        //TODO wait for 15sec
+        sleep(5000);
         open(baseUrl + "/#!/vets");
+        sleep(5000);
         open(baseUrl + "/#!/owners");
+        sleep(5000);
+        open(baseUrl);
     }
-
 }
