@@ -163,7 +163,7 @@
                     <archive>
                         <manifestEntries>
                             <!--suppress UnresolvedMavenProperty -->
-                            <QRebel-App-Version>${env.APP_BUILD}</QRebel-App-Version>
+                            <QRebel-App-Version>${env.APP_VERSION}</QRebel-App-Version>
                             <!--suppress UnresolvedMavenProperty -->
                             <QRebel-App-Build>${env.APP_BUILD}</QRebel-App-Build>
                         </manifestEntries>

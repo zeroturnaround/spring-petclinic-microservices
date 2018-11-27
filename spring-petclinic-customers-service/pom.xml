@@ -123,8 +123,10 @@
                     <warName>petclinic</warName>
                     <archive>
                         <manifestEntries>
-                            <QRebel-App-Version>${project.version}</QRebel-App-Version>
-                            <QRebel-App-Build>${maven.build.timestamp}</QRebel-App-Build>
+                            <!--suppress UnresolvedMavenProperty -->
+                            <QRebel-App-Version>${env.APP_VERSION}</QRebel-App-Version>
+                            <!--suppress UnresolvedMavenProperty -->
+                            <QRebel-App-Build>${env.APP_BUILD}</QRebel-App-Build>
                         </manifestEntries>
                     </archive>
                 </configuration>
