@@ -6,7 +6,3 @@ zuul:
     visits-service: /visit/**
     customers-service: /customer/**
     api-gateway: /gateway/**
-ribbon:
-  eager-load:
-    enabled: true
-    clients: vets-service, visits-service, customers-service, api-gateway
