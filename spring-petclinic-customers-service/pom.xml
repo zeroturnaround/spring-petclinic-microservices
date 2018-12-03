@@ -120,7 +120,6 @@
                 <version>2.1</version>
 
                 <configuration>
-                    <warName>petclinic</warName>
                     <archive>
                         <manifestEntries>
                             <!--suppress UnresolvedMavenProperty -->

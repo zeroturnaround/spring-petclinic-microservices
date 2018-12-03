@@ -18,10 +18,13 @@ package org.springframework.samples.petclinic.vets.web;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
+import java.util.Optional;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.samples.petclinic.vets.model.Vet;
 import org.springframework.samples.petclinic.vets.model.VetRepository;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,6 +38,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/vets")
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 class VetResource {
 
     private final VetRepository vetRepository;
@@ -42,5 +46,13 @@ class VetResource {
     @GetMapping
     public List<Vet> showResourcesVetList() {
         return vetRepository.findAll();
+    }
+
+    /**
+     * Read single Vet
+     */
+    @GetMapping(value = "/{vetId}")
+    public Optional<Vet> findVet(@PathVariable("vetId") int vetId) {
+        return vetRepository.findById(vetId);
     }
 }
