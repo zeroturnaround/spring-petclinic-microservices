@@ -53,6 +53,12 @@ class VetResource {
      */
     @GetMapping(value = "/{vetId}")
     public Optional<Vet> findVet(@PathVariable("vetId") int vetId) {
-        return vetRepository.findById(vetId);
+        List<Vet> vets = vetRepository.findAll();
+        for (Vet vet : vets) {
+            if (vet.getId().equals(vetId)) {
+                return Optional.of(vet);
+            }
+        }
+        return Optional.empty();
     }
 }

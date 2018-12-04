@@ -39,11 +39,13 @@ public class VetResourcesITest {
 
         assertEquals(baseUrl + "/#!/welcome", url());
 
-        String cssSelector = "[title='veterinarians']";
-        assertTrue($(By.cssSelector(cssSelector)).exists());
-        $(By.cssSelector(cssSelector)).click();
+
+        String titleVeterinarians = "[title='veterinarians']";
+        $(Selectors.byCssSelector(titleVeterinarians)).should(Condition.exist);
+        $(Selectors.byCssSelector(titleVeterinarians)).click();
 
         $(By.tagName("title")).shouldBe(exist);
+
         assertEquals(baseUrl + "/#!/vets", url());
     }
 
@@ -60,18 +62,22 @@ public class VetResourcesITest {
         beforeTest();
         open(baseUrl + "/#!/welcome");
 
-        String ownersSelector = "[class='dropdown']";
-        assertTrue($(ownersSelector).exists());
-        $(ownersSelector).click();
+        String ownersSelector = "Owners";
 
-        String allOwnersSelector = "[ui-sref='owners']";
-        assertTrue($(allOwnersSelector).exists());
+        $(Selectors.byText(ownersSelector)).should(Condition.exist);
+        $(Selectors.byText(ownersSelector)).click();
 
-        $(allOwnersSelector).click();
-        sleep(3000);
-        String GeorgeFranklin = "[href='#!/owners/details/2']";
-        assertTrue($(GeorgeFranklin).exists());
-        $(GeorgeFranklin).click();
+        String allOwnersSelector = "All";
+
+        $(Selectors.byText(allOwnersSelector)).should(Condition.exist);
+        $(Selectors.byText(allOwnersSelector)).click();
+
+        String GeorgeFranklin = "George Franklin";
+
+        $(Selectors.byText(GeorgeFranklin)).should(Condition.exist);
+        $(Selectors.byText(GeorgeFranklin)).click();
+
+        $(Selectors.byText(GeorgeFranklin)).should(Condition.exist);
     }
 
     public void beforeTest() {
@@ -90,10 +96,18 @@ public class VetResourcesITest {
         open(baseUrl + "/#!/vets");
 
         String JamesCarter = "James Carter";
-        $(Selectors.byText(JamesCarter)).should(Condition.exist);
-        $(Selectors.byText(JamesCarter)).click();
+        findAndOpenVet(JamesCarter);
+
+        open(baseUrl + "/#!/vets");
+
+        findAndOpenVet("Henry Stevens");
+    }
+
+    private void findAndOpenVet(String vetName) {
+        $(Selectors.byText(vetName)).should(Condition.exist);
+        $(Selectors.byText(vetName)).click();
 
         $(Selectors.byText("Veterinarians")).should(Condition.exist);
-        $(Selectors.byText(JamesCarter)).should(Condition.exist);
+        $(Selectors.byText(vetName)).should(Condition.exist);
     }
 }
