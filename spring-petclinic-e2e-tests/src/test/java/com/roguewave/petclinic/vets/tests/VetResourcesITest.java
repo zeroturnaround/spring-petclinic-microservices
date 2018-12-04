@@ -28,7 +28,7 @@ public class VetResourcesITest {
     public String baseUrl;
 
 
-  //  @Test
+    @Test
     public void testNavigationForward() {
         beforeTest();
         open(baseUrl + "/#!/welcome");
@@ -48,7 +48,7 @@ public class VetResourcesITest {
         assertEquals(baseUrl + "/#!/vets", url());
     }
 
-   // @Test
+    @Test
     public void testVetsAreLoaded() {
         beforeTest();
         open(baseUrl + "/#!/vets");
@@ -58,7 +58,7 @@ public class VetResourcesITest {
 
     @Test
     public void testOwnersDetails() {
-      //  beforeTest();
+        beforeTest();
         open(baseUrl + "/#!/welcome");
 
         String ownersSelector = "Owners";
@@ -81,6 +81,8 @@ public class VetResourcesITest {
 
     @Test
     public void testOwnersEdit() {
+        beforeTest();
+
         open(baseUrl + "/#!/welcome");
 
         String ownersSelector = "Owners";
@@ -120,7 +122,7 @@ public class VetResourcesITest {
         open(baseUrl);
     }
 
-   // @Test
+    @Test
     public void testVetDetails(){
         open(baseUrl + "/#!/vets");
 
