@@ -53,7 +53,7 @@ public class VetResourcesITest {
         beforeTest();
         open(baseUrl + "/#!/vets");
         sleep(5000);
-        assertEquals(6, $$("[ng-repeat='vet in $ctrl.vetList']").size());
+        assertEquals(24, $$("[ng-repeat='vet in $ctrl.vetList']").size());
     }
 
     @Test
