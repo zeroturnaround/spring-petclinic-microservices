@@ -1,6 +1,8 @@
 package com.roguewave.petclinic.vets.tests;
 
 
+import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.Selectors;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -75,12 +77,23 @@ public class VetResourcesITest {
     public void beforeTest() {
         //Temporary workaround for Zuul not wiring first request properly
         open(baseUrl);
-        //TODO wait for 15sec
         sleep(5000);
         open(baseUrl + "/#!/vets");
         sleep(5000);
         open(baseUrl + "/#!/owners");
         sleep(5000);
         open(baseUrl);
+    }
+
+    @Test
+    public void testVetDetails(){
+        open(baseUrl + "/#!/vets");
+
+        String JamesCarter = "James Carter";
+        $(Selectors.byText(JamesCarter)).should(Condition.exist);
+        $(Selectors.byText(JamesCarter)).click();
+
+        $(Selectors.byText("Veterinarians")).should(Condition.exist);
+        $(Selectors.byText(JamesCarter)).should(Condition.exist);
     }
 }
