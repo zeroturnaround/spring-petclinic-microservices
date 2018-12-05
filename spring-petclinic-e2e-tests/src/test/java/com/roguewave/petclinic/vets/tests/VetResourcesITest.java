@@ -134,6 +134,44 @@ public class VetResourcesITest {
         findAndOpenVet("Henry Stevens");
     }
 
+    @Test
+    public void testVetEditName() {
+        open(baseUrl + "/#!/vets");
+
+        findAndOpenVet("Helen Leary");
+        $(Selectors.byText("Edit Vet")).click();
+
+        $(Selectors.byName("firstName")).setValue("Helena");
+        $(Selectors.byText("Save")).click();
+
+        findAndOpenVet("Helena Leary");
+        $(Selectors.byText("Edit Vet")).click();
+
+        $(Selectors.byName("firstName")).setValue("Helen");
+        $(Selectors.byText("Save")).click();
+    }
+
+    @Test
+    public void testVetEditSpecialty() {
+        open(baseUrl + "/#!/vets");
+
+        findAndOpenVet("Henry Stevens");
+        $(Selectors.byText("Edit Vet")).click();
+
+        $(Selectors.byName("specialty")).setValue("radiology surgery");
+        $(Selectors.byText("Save")).click();
+
+        findAndOpenVet("Henry Stevens");
+        $(Selectors.byText("radiology")).should(Condition.exist);
+        $(Selectors.byText("surgery")).should(Condition.exist);
+        $(Selectors.byText("Edit Vet")).click();
+
+        $(Selectors.byName("specialty")).setValue("radiology");
+        $(Selectors.byText("Save")).click();
+    }
+
+
+
     private void findAndOpenVet(String vetName) {
         $(Selectors.byText(vetName)).should(Condition.exist);
         $(Selectors.byText(vetName)).click();

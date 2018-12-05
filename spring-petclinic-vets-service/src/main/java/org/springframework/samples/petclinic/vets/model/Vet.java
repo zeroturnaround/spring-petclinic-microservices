@@ -62,7 +62,7 @@ public class Vet {
     @NotEmpty
     private String lastName;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "vet_specialties", joinColumns = @JoinColumn(name = "vet_id"),
         inverseJoinColumns = @JoinColumn(name = "specialty_id"))
     private Set<Specialty> specialties;
@@ -111,6 +111,11 @@ public class Vet {
 
     public void addSpecialty(Specialty specialty) {
         getSpecialtiesInternal().add(specialty);
+    }
+
+    public void setSpecialties(List<Specialty> specialties) {
+        getSpecialtiesInternal().clear();
+        getSpecialtiesInternal().addAll(specialties);
     }
 
 }

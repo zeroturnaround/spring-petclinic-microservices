@@ -1,0 +1,25 @@
+<h2>Vet</h2>
+<form ng-submit="$ctrl.submitVetForm()" style="max-width: 25em;">
+    <div class="form-group">
+        <label>First name</label>
+        <input class="form-control" ng-model="$ctrl.vet.firstName" name="firstName" required/>
+        <span ng-show="vetForm.firstName.$error.required" class="help-block">First name is required.</span>
+    </div>
+
+    <div class="form-group">
+        <label>Last name</label>
+        <input class="form-control" ng-model="$ctrl.vet.lastName" name="lastName" required/>
+        <span ng-show="vetForm.lastName.$error.required" class="help-block">Last name is required.</span>
+    </div>
+
+
+    <div class="form-group">
+        <label>Speciality</label>
+        <input class="form-control" name="specialty" ng-model="$ctrl.specialtiesHolder"/>
+    </div>
+
+
+    <div class="form-group">
+        <button class="btn btn-default" type="submit">Save</button>
+    </div>
+</form>

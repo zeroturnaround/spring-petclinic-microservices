@@ -8,4 +8,12 @@
         <th>Speciality</th>
         <td><span ng-repeat="specialty in $ctrl.vet.specialties">{{specialty.name + ' '}}</span></td>
     </tr>
+    <tr>
+        <td>
+            <a class="btn btn-default" ui-sref="vetEdit({vetId: $ctrl.vet.id})">Edit Vet</a>
+        </td>
+        <td>
+            <a ui-sref="ownerNew({vetId: $ctrl.vet.id, ownerId: $ctrl.owner.id})" class="btn btn-default">Add New Customer</a>
+        </td>
+    </tr>
 </table>
