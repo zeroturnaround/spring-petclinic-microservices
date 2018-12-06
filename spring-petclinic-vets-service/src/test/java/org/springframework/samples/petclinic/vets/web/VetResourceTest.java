@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.samples.petclinic.vets.model.SpecialtyRepository;
 import org.springframework.samples.petclinic.vets.model.Vet;
 import org.springframework.samples.petclinic.vets.model.VetRepository;
 import org.springframework.test.context.ActiveProfiles;
@@ -46,6 +47,9 @@ class VetResourceTest {
 
     @MockBean
     VetRepository vetRepository;
+
+    @MockBean
+    SpecialtyRepository specialtyRepository;
 
     @Test
     void shouldGetAListOfVets() throws Exception {
