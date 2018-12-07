@@ -74,12 +74,17 @@ class VetResource {
         List<Specialty> specialties = new ArrayList<>();
         for (Specialty specialty : vetRequest.getSpecialties()) {
             if (!specialty.getName().isEmpty()) {
-                Optional<Specialty> existingSpeciality = specialtyRepository.findSpecialtyByName(specialty.getName());
-                if (existingSpeciality.isPresent()) {
-                    specialties.add(existingSpeciality.get());
-                } else {
+                List<Specialty> allSpecialties = specialtyRepository.findAll();
+                boolean foundSpeciality = false;
+                for (Specialty existingSpeciality : allSpecialties) {
+                    if (existingSpeciality.getName().equals(specialty.getName())) {
+                        foundSpeciality = true;
+                        specialties.add(existingSpeciality);
+                    }
+                }
+                if (!foundSpeciality) {
                     Specialty savedSpeciality = specialtyRepository.save(specialty);
-                    specialties.add(specialty);
+                    specialties.add(savedSpeciality);
                 }
             }
         }
