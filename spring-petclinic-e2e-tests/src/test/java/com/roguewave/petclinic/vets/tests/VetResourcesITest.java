@@ -170,6 +170,26 @@ public class VetResourcesITest {
         $(Selectors.byText("Save")).click();
     }
 
+    @Test
+    public void testVetEditAndAddNewSpecialty() {
+        open(baseUrl + "/#!/vets");
+
+        findAndOpenVet("Henry Stevens");
+        $(Selectors.byText("Edit Vet")).click();
+
+        $(Selectors.byName("specialty")).setValue("radiology surgery general");
+        $(Selectors.byText("Save")).click();
+
+        findAndOpenVet("Henry Stevens");
+        $(Selectors.byText("radiology")).should(Condition.exist);
+        $(Selectors.byText("surgery")).should(Condition.exist);
+        $(Selectors.byText("general")).should(Condition.exist);
+        $(Selectors.byText("Edit Vet")).click();
+
+        $(Selectors.byName("specialty")).setValue("radiology");
+        $(Selectors.byText("Save")).click();
+    }
+
 
 
     private void findAndOpenVet(String vetName) {
