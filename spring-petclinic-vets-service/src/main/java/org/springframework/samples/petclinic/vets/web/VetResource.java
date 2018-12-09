@@ -18,16 +18,16 @@ package org.springframework.samples.petclinic.vets.web;
 import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Example;
-import org.springframework.samples.petclinic.vets.model.Specialty;
-import org.springframework.samples.petclinic.vets.model.SpecialtyRepository;
-import org.springframework.samples.petclinic.vets.model.Vet;
-import org.springframework.samples.petclinic.vets.model.VetRepository;
+import org.springframework.samples.petclinic.vets.model.*;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import javax.validation.Valid;
 
@@ -42,10 +42,12 @@ import javax.validation.Valid;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
+@Component
 class VetResource {
 
     private final VetRepository vetRepository;
     private final SpecialtyRepository specialtyRepository;
+    private final RestTemplate loadBalancedRestTemplate;
 
     @GetMapping
     public List<Vet> showResourcesVetList() {
@@ -57,7 +59,10 @@ class VetResource {
      */
     @GetMapping(value = "/{vetId}")
     public Optional<Vet> findVet(@PathVariable("vetId") int vetId) {
-        return vetRepository.findById(vetId);
+        OwnerDetails[] ownerDetailsList = loadBalancedRestTemplate.getForObject("http://customers-service/owners/", OwnerDetails[].class);
+        Optional<Vet> vet = vetRepository.findById(vetId);
+        vet.get().setOwners(Arrays.asList(ownerDetailsList));
+        return vet;
     }
 
     /**
@@ -72,7 +77,9 @@ class VetResource {
         vetModel.setFirstName(vetRequest.getFirstName());
         vetModel.setLastName(vetRequest.getLastName());
         List<Specialty> specialties = new ArrayList<>();
+
         for (Specialty specialty : vetRequest.getSpecialties()) {
+
             if (!specialty.getName().isEmpty()) {
                 List<Specialty> allSpecialties = specialtyRepository.findAll();
                 boolean foundSpeciality = false;

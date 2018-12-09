@@ -19,7 +19,16 @@
     </div>
 
 
+    <div class ="form-group">
+        <label>Customers</label>
+        <select class="form-control" multiple="multiple">
+            <option ng-repeat="owner in $ctrl.vet.owners"> {{owner.firstName + " " + owner.lastName}}</option>
+        </select>
+    </div>
+
     <div class="form-group">
         <button class="btn btn-default" type="submit">Save</button>
     </div>
+
+
 </form>

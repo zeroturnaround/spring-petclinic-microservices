@@ -5,6 +5,7 @@ angular.module('vetForm')
         var self = this;
         var vetId = $stateParams.vetId || 0;
 
+
         if (!vetId) {
             self.vet = {};
         } else {
@@ -20,6 +21,7 @@ angular.module('vetForm')
         }
 
         self.submitVetForm = function () {
+
             var id = self.vet.id;
             var specialities = self.specialtiesHolder.split(" ");
 
