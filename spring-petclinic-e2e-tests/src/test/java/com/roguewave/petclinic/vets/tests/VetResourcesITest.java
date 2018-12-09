@@ -114,11 +114,11 @@ public class VetResourcesITest {
     public void beforeTest() {
         //Temporary workaround for Zuul not wiring first request properly
         open(baseUrl);
-        sleep(5000);
+        sleep(500);
         open(baseUrl + "/#!/vets");
-        sleep(5000);
+        sleep(500);
         open(baseUrl + "/#!/owners");
-        sleep(5000);
+        sleep(500);
         open(baseUrl);
     }
 
@@ -141,12 +141,14 @@ public class VetResourcesITest {
         findAndOpenVet("Helen Leary");
         $(Selectors.byText("Edit Vet")).click();
 
+        $(Selectors.byName("firstName")).clear();
         $(Selectors.byName("firstName")).setValue("Helena");
         $(Selectors.byText("Save")).click();
 
         findAndOpenVet("Helena Leary");
         $(Selectors.byText("Edit Vet")).click();
 
+        $(Selectors.byName("firstName")).clear();
         $(Selectors.byName("firstName")).setValue("Helen");
         $(Selectors.byText("Save")).click();
     }
@@ -171,7 +173,38 @@ public class VetResourcesITest {
     }
 
     @Test
-    public void testVetEditAndAddNewSpecialty() {
+    public void testVetEditAndAddMultipleSpecialty() {
+        open(baseUrl + "/#!/vets");
+
+        findAndOpenVet("Peter Svensson");
+        $(Selectors.byText("Edit Vet")).click();
+
+        $(Selectors.byName("specialty")).setValue("allergist cardiology dentistry endriconolgy infections internal nesthesiologists neurosurgeon otolaryngology pediatry radiology surgery");
+        $(Selectors.byText("Save")).click();
+
+        findAndOpenVet("Peter Svensson");
+        $(Selectors.byText("allergist")).should(Condition.exist);
+        $(Selectors.byText("cardiology")).should(Condition.exist);
+        $(Selectors.byText("dentistry")).should(Condition.exist);
+        $(Selectors.byText("infections")).should(Condition.exist);
+        $(Selectors.byText("endriconolgy")).should(Condition.exist);
+        $(Selectors.byText("internal")).should(Condition.exist);
+        $(Selectors.byText("nesthesiologists")).should(Condition.exist);
+        $(Selectors.byText("otolaryngology")).should(Condition.exist);
+        $(Selectors.byText("neurosurgeon")).should(Condition.exist);
+        $(Selectors.byText("otolaryngology")).should(Condition.exist);
+        $(Selectors.byText("pediatry")).should(Condition.exist);
+        $(Selectors.byText("internal")).should(Condition.exist);
+        $(Selectors.byText("radiology")).should(Condition.exist);
+        $(Selectors.byText("surgery")).should(Condition.exist);
+        $(Selectors.byText("Edit Vet")).click();
+
+        $(Selectors.byName("specialty")).setValue("radiology");
+        $(Selectors.byText("Save")).click();
+    }
+
+    @Test
+    public void testVetEditAndAddSpecialty() {
         open(baseUrl + "/#!/vets");
 
         findAndOpenVet("Henry Stevens");
@@ -189,7 +222,6 @@ public class VetResourcesITest {
         $(Selectors.byName("specialty")).setValue("radiology");
         $(Selectors.byText("Save")).click();
     }
-
 
 
     private void findAndOpenVet(String vetName) {
