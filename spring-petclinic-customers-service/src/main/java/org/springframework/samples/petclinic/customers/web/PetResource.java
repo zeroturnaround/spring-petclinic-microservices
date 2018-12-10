@@ -17,6 +17,8 @@ package org.springframework.samples.petclinic.customers.web;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.http.HttpStatus;
 import org.springframework.samples.petclinic.customers.model.*;
 import org.springframework.web.bind.annotation.*;
@@ -90,6 +92,12 @@ class PetResource {
             throw new ResourceNotFoundException("Pet "+petId+" not found");
         }
         return pet.get();
+    }
+
+    @EventListener(ApplicationReadyEvent.class)
+    public void initDb() {
+        petRepository.findAll();
+        ownerRepository.findAll();
     }
 
 }

@@ -23,11 +23,14 @@ import java.util.List;
 import java.util.Optional;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Example;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.event.EventListener;
 import org.springframework.samples.petclinic.vets.model.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.filter.CommonsRequestLoggingFilter;
 
 import javax.validation.Valid;
 
@@ -79,7 +82,6 @@ class VetResource {
         List<Specialty> specialties = new ArrayList<>();
 
         for (Specialty specialty : vetRequest.getSpecialties()) {
-
             if (!specialty.getName().isEmpty()) {
                 List<Specialty> allSpecialties = specialtyRepository.findAll();
                 boolean foundSpeciality = false;
@@ -98,4 +100,12 @@ class VetResource {
         vetModel.setSpecialties(specialties);
         return vetRepository.save(vetModel);
     }
+
+    @EventListener(ApplicationReadyEvent.class)
+    public void initDb() {
+        vetRepository.findAll();
+        specialtyRepository.findAll();
+    }
 }
+
+

@@ -17,6 +17,8 @@ package org.springframework.samples.petclinic.customers.web;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.http.HttpStatus;
 import org.springframework.samples.petclinic.customers.model.Owner;
 import org.springframework.samples.petclinic.customers.model.OwnerRepository;
@@ -82,5 +84,10 @@ class OwnerResource {
         ownerModel.setTelephone(ownerRequest.getTelephone());
         log.info("Saving owner {}", ownerModel);
         return ownerRepository.save(ownerModel);
+    }
+
+    @EventListener(ApplicationReadyEvent.class)
+    public void initDb() {
+        ownerRepository.findAll();
     }
 }

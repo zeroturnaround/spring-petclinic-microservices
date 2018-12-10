@@ -1,3 +1,7 @@
+ribbon:
+  eager-load:
+    enabled: true
+
 zuul:
   prefix: /api
   ignoredServices: '*'
@@ -9,3 +13,33 @@ zuul:
   ribbon:
     eager-load:
       enabled: true
+debug: true
+trace: true
+logging:
+  level:
+    org:
+        springframework:
+          cloud:
+            netflix: trace
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: false
+vets-service:
+    ReadTimeout: 15000
+    ConnectTimeout: 15000
+visits-service:
+    ReadTimeout: 15000
+    ConnectTimeout: 15000
+customers-service:
+    ReadTimeout: 15000
+    ConnectTimeout: 15000
+api-gateway:
+    ReadTimeout: 15000
+    ConnectTimeout: 15000
+
+health:
+  config:
+    enabled: false

@@ -1,3 +1,11 @@
+ribbon:
+  eager-load:
+    enabled: true
+
+health:
+  config:
+    enabled:false
+
 server.port: 8888
 spring:
   cloud:
@@ -5,6 +13,9 @@ spring:
       server:
         git:
           uri: https://github.com/spring-petclinic/spring-petclinic-microservices-config
+        health:
+          enabled: false
+
 ---
 spring:
   profiles: local
@@ -13,3 +24,5 @@ spring:
       server:
         git:
           uri: file:///${GIT_REPO}
+        health:
+            enabled: false
