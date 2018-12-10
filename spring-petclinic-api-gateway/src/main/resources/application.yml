@@ -1,3 +1,9 @@
+ribbon:
+  eager-load:
+    enabled: true
+  ReadTimeout: 150000
+  ConnectTimeout: 150000
+
 zuul:
   prefix: /api
   ignoredServices: '*'
@@ -6,6 +12,62 @@ zuul:
     visits-service: /visit/**
     customers-service: /customer/**
     api-gateway: /gateway/**
+  ribbonIsolationStrategy: THREAD
   ribbon:
     eager-load:
       enabled: true
+debug: true
+trace: true
+logging:
+  level:
+    org:
+      springframework:
+        cloud:
+          netflix: trace
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 310000
+    vets-service:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 310000
+    visits-service:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 310000
+    customers-service:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 310000
+    api-gateway:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 310000
+vets-service:
+  ribbon:
+    ReadTimeout: 150000
+    ConnectTimeout: 150000
+visits-service:
+  ribbon:
+    ReadTimeout: 150000
+    ConnectTimeout: 150000
+customers-service:
+  ribbon:
+    ReadTimeout: 150000
+    ConnectTimeout: 150000
+api-gateway:
+  ribbon:
+    ReadTimeout: 150000
+    ConnectTimeout: 150000
+
+health:
+  config:
+    enabled: false

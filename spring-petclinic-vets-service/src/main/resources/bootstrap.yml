@@ -1,3 +1,10 @@
+health:
+  config:
+    enabled: false
+ribbon:
+  eager-load:
+    enabled: true
+
 spring:
   cloud:
     config:

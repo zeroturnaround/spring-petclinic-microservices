@@ -19,11 +19,15 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
+
 import org.springframework.samples.petclinic.vets.model.Vet;
 import org.springframework.samples.petclinic.vets.model.VetRepository;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+
+import javax.validation.Valid;
 
 /**
  * @author Juergen Hoeller
@@ -41,6 +45,10 @@ class VetResource {
 
     @GetMapping
     public List<Vet> showResourcesVetList() {
-        return vetRepository.findAll();
+        List<Vet> vetList = vetRepository.findAll();
+        return vetList;
     }
+
 }
+
+

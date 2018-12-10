@@ -1,9 +1,13 @@
 package com.roguewave.petclinic.vets.tests;
 
 
+import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.Selectors;
+import org.junit.FixMethodOrder;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.runners.MethodSorters;
 import org.openqa.selenium.By;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,6 +25,8 @@ import static org.junit.Assert.assertTrue;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+
 public class VetResourcesITest {
 
     @Value("${baseUrl}")
@@ -37,11 +43,13 @@ public class VetResourcesITest {
 
         assertEquals(baseUrl + "/#!/welcome", url());
 
-        String cssSelector = "[title='veterinarians']";
-        assertTrue($(By.cssSelector(cssSelector)).exists());
-        $(By.cssSelector(cssSelector)).click();
+
+        String titleVeterinarians = "[title='veterinarians']";
+        $(Selectors.byCssSelector(titleVeterinarians)).should(Condition.exist);
+        $(Selectors.byCssSelector(titleVeterinarians)).click();
 
         $(By.tagName("title")).shouldBe(exist);
+
         assertEquals(baseUrl + "/#!/vets", url());
     }
 
@@ -50,7 +58,7 @@ public class VetResourcesITest {
         beforeTest();
         open(baseUrl + "/#!/vets");
         sleep(5000);
-        assertEquals(6, $$("[ng-repeat='vet in $ctrl.vetList']").size());
+        assertEquals(24, $$("[ng-repeat='vet in $ctrl.vetList']").size());
     }
 
     @Test
@@ -58,29 +66,32 @@ public class VetResourcesITest {
         beforeTest();
         open(baseUrl + "/#!/welcome");
 
-        String ownersSelector = "[class='dropdown']";
-        assertTrue($(ownersSelector).exists());
-        $(ownersSelector).click();
+        String ownersSelector = "Owners";
 
-        String allOwnersSelector = "[ui-sref='owners']";
-        assertTrue($(allOwnersSelector).exists());
+        $(Selectors.byText(ownersSelector)).should(Condition.exist);
+        $(Selectors.byText(ownersSelector)).click();
 
-        $(allOwnersSelector).click();
-        sleep(3000);
-        String GeorgeFranklin = "[href='#!/owners/details/2']";
-        assertTrue($(GeorgeFranklin).exists());
-        $(GeorgeFranklin).click();
+        String allOwnersSelector = "All";
+
+        $(Selectors.byText(allOwnersSelector)).should(Condition.exist);
+        $(Selectors.byText(allOwnersSelector)).click();
+
+        String GeorgeFranklin = "George Franklin";
+
+        $(Selectors.byText(GeorgeFranklin)).should(Condition.exist);
+        $(Selectors.byText(GeorgeFranklin)).click();
+
+        open(baseUrl);
     }
 
     public void beforeTest() {
         //Temporary workaround for Zuul not wiring first request properly
         open(baseUrl);
-        //TODO wait for 15sec
-        sleep(5000);
+        sleep(500);
         open(baseUrl + "/#!/vets");
-        sleep(5000);
+        sleep(500);
         open(baseUrl + "/#!/owners");
-        sleep(5000);
+        sleep(500);
         open(baseUrl);
     }
 }
