@@ -22,38 +22,51 @@ logging:
         springframework:
           cloud:
             netflix: trace
+            
+ribbon:
+  ReadTimeout: 150000
+  ConnectTimeout: 150000
 hystrix:
   command:
     default:
       execution:
-        timeout:
-          enabled: false
+        isolation:
+          thread: 
+            timeoutInMilliseconds: 310000
     vets-service:
       execution:
-        timeout:
-          enabled: false
+        isolation:
+          thread: 
+            timeoutInMilliseconds: 310000
     visits-service:
       execution:
-        timeout:
-          enabled: false
+        isolation:
+          thread: 
+            timeoutInMilliseconds: 310000
     customers-service:
       execution:
-        timeout:
-          enabled: false
+        isolation:
+          thread: 
+            timeoutInMilliseconds: 310000
     api-gateway:
       execution:
-        timeout:
-          enabled: false
+        isolation:
+          thread: 
+            timeoutInMilliseconds: 310000
 vets-service:
+  ribbon:
     ReadTimeout: 150000
     ConnectTimeout: 150000
 visits-service:
+  ribbon:
     ReadTimeout: 150000
     ConnectTimeout: 150000
 customers-service:
+  ribbon:
     ReadTimeout: 150000
     ConnectTimeout: 150000
 api-gateway:
+  ribbon:
     ReadTimeout: 150000
     ConnectTimeout: 150000
 
