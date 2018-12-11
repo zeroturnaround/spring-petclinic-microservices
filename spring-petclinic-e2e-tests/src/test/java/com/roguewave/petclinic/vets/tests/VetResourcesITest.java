@@ -256,8 +256,8 @@ public class VetResourcesITest {
         $(Selectors.byText(vetName)).should(Condition.exist);
         $(Selectors.byText(vetName)).click();
 
-        $(Selectors.byText("Veterinarians")).should(Condition.exist);
-        $(Selectors.byText(vetName)).should(Condition.exist);
+        $(Selectors.byText("Veterinarian")).should(Condition.exist);
+        $(Selectors.byText(vetName)).waitUntil(Condition.exist, 10000);
     }
 
     private void openAndLoadVets() {

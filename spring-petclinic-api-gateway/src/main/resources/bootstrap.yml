@@ -1,7 +1,3 @@
-ribbon:
-  eager-load:
-    enabled: true
-
 spring:
   cloud:
     config:
