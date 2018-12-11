@@ -10,6 +10,7 @@ zuul:
     visits-service: /visit/**
     customers-service: /customer/**
     api-gateway: /gateway/**
+  ribbonIsolationStrategy: THREAD
   ribbon:
     eager-load:
       enabled: true
