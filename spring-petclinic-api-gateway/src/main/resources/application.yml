@@ -27,6 +27,30 @@ hystrix:
       execution:
         timeout:
           enabled: false
+hystrix:
+  command:
+    vets-service:
+      execution:
+        timeout:
+          enabled: false
+hystrix:
+  command:
+    visits-service:
+      execution:
+        timeout:
+          enabled: false
+hystrix:
+  command:
+    customers-service:
+      execution:
+        timeout:
+          enabled: false
+hystrix:
+  command:
+    api-gateway:
+      execution:
+        timeout:
+          enabled: false
 vets-service:
     ReadTimeout: 150000
     ConnectTimeout: 150000
