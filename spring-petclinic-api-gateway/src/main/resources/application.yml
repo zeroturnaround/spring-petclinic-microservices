@@ -28,17 +28,17 @@ hystrix:
         timeout:
           enabled: false
 vets-service:
-    ReadTimeout: 15000
-    ConnectTimeout: 15000
+    ReadTimeout: 150000
+    ConnectTimeout: 150000
 visits-service:
-    ReadTimeout: 15000
-    ConnectTimeout: 15000
+    ReadTimeout: 150000
+    ConnectTimeout: 150000
 customers-service:
-    ReadTimeout: 15000
-    ConnectTimeout: 15000
+    ReadTimeout: 150000
+    ConnectTimeout: 150000
 api-gateway:
-    ReadTimeout: 15000
-    ConnectTimeout: 15000
+    ReadTimeout: 150000
+    ConnectTimeout: 150000
 
 health:
   config:
