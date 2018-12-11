@@ -113,4 +113,9 @@ public class Vet {
         getSpecialtiesInternal().add(specialty);
     }
 
+    public void setSpecialties(List<Specialty> specialties) {
+        getSpecialtiesInternal().clear();
+        getSpecialtiesInternal().addAll(specialties);
+    }
+
 }

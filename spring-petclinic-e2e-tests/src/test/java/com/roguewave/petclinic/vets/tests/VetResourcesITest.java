@@ -96,6 +96,56 @@ public class VetResourcesITest {
         findAndOpenVet("Henry Stevens");
     }
 
+    @Test
+    public void testVetEditName() {
+        openAndLoadVets();
+
+        findAndOpenVet("Helen Leary");
+        $(Selectors.byText("Edit Vet")).click();
+
+        $(Selectors.byName("firstName")).waitUntil(Condition.value("Helen"), 10000);
+        $(Selectors.byName("lastName")).waitUntil(Condition.value("Leary"), 10000);
+
+        $(Selectors.byName("firstName")).clear();
+        $(Selectors.byName("firstName")).setValue("Helena");
+        $(Selectors.byText("Save")).click();
+
+        findAndOpenVet("Helena Leary");
+        $(Selectors.byText("Edit Vet")).click();
+
+        $(Selectors.byName("firstName")).waitUntil(Condition.value("Helena"), 10000);
+        $(Selectors.byName("lastName")).waitUntil(Condition.value("Leary"), 10000);
+
+        $(Selectors.byName("firstName")).clear();
+        $(Selectors.byName("firstName")).setValue("Helen");
+        $(Selectors.byText("Save")).click();
+    }
+
+    @Test
+    public void testVetEditSpecialty() {
+        openAndLoadVets();
+
+        findAndOpenVet("Henry Stevens");
+        $(Selectors.byText("Edit Vet")).click();
+
+        $(Selectors.byName("firstName")).waitUntil(Condition.value("Henry"), 10000);
+        $(Selectors.byName("lastName")).waitUntil(Condition.value("Stevens"), 10000);
+
+        $(Selectors.byName("specialty")).setValue("radiology surgery");
+        $(Selectors.byText("Save")).click();
+
+        findAndOpenVet("Henry Stevens");
+        $(Selectors.byText("radiology")).should(Condition.exist);
+        $(Selectors.byText("surgery")).should(Condition.exist);
+        $(Selectors.byText("Edit Vet")).click();
+
+        $(Selectors.byName("firstName")).waitUntil(Condition.value("Henry"), 10000);
+        $(Selectors.byName("lastName")).waitUntil(Condition.value("Stevens"), 10000);
+
+        $(Selectors.byName("specialty")).setValue("radiology");
+        $(Selectors.byText("Save")).click();
+    }
+
     private void findAndOpenVet(String vetName) {
         $(Selectors.byText(vetName)).should(Condition.exist);
         $(Selectors.byText(vetName)).click();
@@ -114,4 +164,9 @@ public class VetResourcesITest {
         sleep(500);
         open(baseUrl);
     }
+
+    private void openAndLoadVets() {
+        open(baseUrl + "/#!/vets");
+    }
+
 }

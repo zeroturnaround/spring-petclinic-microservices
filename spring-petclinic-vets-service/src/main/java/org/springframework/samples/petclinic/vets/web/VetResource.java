@@ -17,17 +17,17 @@ package org.springframework.samples.petclinic.vets.web;
 
 import lombok.RequiredArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 
+import org.springframework.samples.petclinic.vets.model.Specialty;
+import org.springframework.samples.petclinic.vets.model.SpecialtyRepository;
 import org.springframework.samples.petclinic.vets.model.Vet;
 import org.springframework.samples.petclinic.vets.model.VetRepository;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 import javax.validation.Valid;
@@ -45,6 +45,8 @@ import javax.validation.Valid;
 class VetResource {
 
     private final VetRepository vetRepository;
+    private final SpecialtyRepository specialtyRepository;
+
 
     @GetMapping
     public List<Vet> showResourcesVetList() {
@@ -59,6 +61,26 @@ class VetResource {
     public Optional<Vet> findVet(@PathVariable("vetId") int vetId) {
         Optional<Vet> vet = vetRepository.findById(vetId);
         return vet;
+    }
+
+    /**
+     * Update Vet
+     */
+    @PutMapping(value = "/{vetId}")
+    public Vet updateOwner(@PathVariable("vetId") int vetId, @Valid @RequestBody Vet vetRequest) {
+        final Optional<Vet> vet = findVet(vetId);
+        final Vet vetModel = vet.get();
+        vetModel.setFirstName(vetRequest.getFirstName());
+        vetModel.setLastName(vetRequest.getLastName());
+        List<Specialty> specialties = new ArrayList<>();
+        for (Specialty specialty : vetRequest.getSpecialties()) {
+            if (!specialty.getName().isEmpty()) {
+                Specialty specialtyWithId = specialtyRepository.findSpecialtyByName(specialty.getName()).get();
+                specialties.add(specialtyWithId);
+            }
+        }
+        vetModel.setSpecialties(specialties);
+        return vetRepository.save(vetModel);
     }
 
 }
