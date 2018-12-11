@@ -84,6 +84,26 @@ public class VetResourcesITest {
         open(baseUrl);
     }
 
+    @Test
+    public void testVetDetails(){
+        open(baseUrl + "/#!/vets");
+
+        String JamesCarter = "James Carter";
+        findAndOpenVet(JamesCarter);
+
+        open(baseUrl + "/#!/vets");
+
+        findAndOpenVet("Henry Stevens");
+    }
+
+    private void findAndOpenVet(String vetName) {
+        $(Selectors.byText(vetName)).should(Condition.exist);
+        $(Selectors.byText(vetName)).click();
+
+        $(Selectors.byText("Veterinarian")).should(Condition.exist);
+        $(Selectors.byText(vetName)).waitUntil(Condition.exist, 20000);
+    }
+
     public void beforeTest() {
         //Temporary workaround for Zuul not wiring first request properly
         open(baseUrl);
