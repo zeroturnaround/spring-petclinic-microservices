@@ -1,11 +1,14 @@
 package com.roguewave.petclinic.vets.tests;
 
 
+import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selectors;
+import org.junit.FixMethodOrder;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.runners.MethodSorters;
 import org.openqa.selenium.By;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,6 +25,7 @@ import static org.junit.Assert.assertEquals;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class VetResourcesITest {
 
     @Value("${baseUrl}")
@@ -100,12 +104,14 @@ public class VetResourcesITest {
         $(Selectors.byText(GeorgeFranklin)).should(Condition.exist);
         $(Selectors.byText(GeorgeFranklin)).click();
 
+        $(Selectors.byText(GeorgeFranklin)).should(Condition.exist);
+
         String editOwner = "Edit Owner";
         $(Selectors.byText(editOwner)).should(Condition.exist);
         $(Selectors.byText(editOwner)).click();
 
-        $(Selectors.byText("George")).should(Condition.exist);
-        $(Selectors.byText("Franklin")).should(Condition.exist);
+        $(Selectors.byName("firstName")).waitUntil(Condition.value("George"), 10000);
+        $(Selectors.byName("lastName")).waitUntil(Condition.value("Franklin"), 10000);
 
         String submit = "Submit";
         $(Selectors.byText(submit)).should(Condition.exist);
@@ -139,10 +145,13 @@ public class VetResourcesITest {
 
     @Test
     public void testVetEditName() {
-        open(baseUrl + "/#!/vets");
+        openAndLoadVets();
 
         findAndOpenVet("Helen Leary");
         $(Selectors.byText("Edit Vet")).click();
+
+        $(Selectors.byName("firstName")).waitUntil(Condition.value("Helen"), 10000);
+        $(Selectors.byName("lastName")).waitUntil(Condition.value("Leary"), 10000);
 
         $(Selectors.byName("firstName")).clear();
         $(Selectors.byName("firstName")).setValue("Helena");
@@ -151,6 +160,9 @@ public class VetResourcesITest {
         findAndOpenVet("Helena Leary");
         $(Selectors.byText("Edit Vet")).click();
 
+        $(Selectors.byName("firstName")).waitUntil(Condition.value("Helena"), 10000);
+        $(Selectors.byName("lastName")).waitUntil(Condition.value("Leary"), 10000);
+
         $(Selectors.byName("firstName")).clear();
         $(Selectors.byName("firstName")).setValue("Helen");
         $(Selectors.byText("Save")).click();
@@ -158,10 +170,13 @@ public class VetResourcesITest {
 
     @Test
     public void testVetEditSpecialty() {
-        open(baseUrl + "/#!/vets");
+        openAndLoadVets();
 
         findAndOpenVet("Henry Stevens");
         $(Selectors.byText("Edit Vet")).click();
+
+        $(Selectors.byName("firstName")).waitUntil(Condition.value("Henry"), 10000);
+        $(Selectors.byName("lastName")).waitUntil(Condition.value("Stevens"), 10000);
 
         $(Selectors.byName("specialty")).setValue("radiology surgery");
         $(Selectors.byText("Save")).click();
@@ -171,13 +186,16 @@ public class VetResourcesITest {
         $(Selectors.byText("surgery")).should(Condition.exist);
         $(Selectors.byText("Edit Vet")).click();
 
+        $(Selectors.byName("firstName")).waitUntil(Condition.value("Henry"), 10000);
+        $(Selectors.byName("lastName")).waitUntil(Condition.value("Stevens"), 10000);
+
         $(Selectors.byName("specialty")).setValue("radiology");
         $(Selectors.byText("Save")).click();
     }
 
     @Test
     public void testVetEditAndAddMultipleSpecialty() {
-        open(baseUrl + "/#!/vets");
+        openAndLoadVets();
 
         findAndOpenVet("Peter Svensson");
         $(Selectors.byText("Edit Vet")).click();
@@ -208,19 +226,26 @@ public class VetResourcesITest {
 
     @Test
     public void testVetEditAndAddSpecialty() {
-        open(baseUrl + "/#!/vets");
+        openAndLoadVets();
 
         findAndOpenVet("Henry Stevens");
         $(Selectors.byText("Edit Vet")).click();
+
+        $(Selectors.byName("firstName")).waitUntil(Condition.value("Henry"), 10000);
+        $(Selectors.byName("lastName")).waitUntil(Condition.value("Stevens"), 10000);
 
         $(Selectors.byName("specialty")).setValue("radiology surgery general");
         $(Selectors.byText("Save")).click();
 
         findAndOpenVet("Henry Stevens");
+
         $(Selectors.byText("radiology")).should(Condition.exist);
         $(Selectors.byText("surgery")).should(Condition.exist);
         $(Selectors.byText("general")).should(Condition.exist);
         $(Selectors.byText("Edit Vet")).click();
+
+        $(Selectors.byName("firstName")).waitUntil(Condition.value("Henry"), 10000);
+        $(Selectors.byName("lastName")).waitUntil(Condition.value("Stevens"), 10000);
 
         $(Selectors.byName("specialty")).setValue("radiology");
         $(Selectors.byText("Save")).click();
@@ -233,5 +258,9 @@ public class VetResourcesITest {
 
         $(Selectors.byText("Veterinarians")).should(Condition.exist);
         $(Selectors.byText(vetName)).should(Condition.exist);
+    }
+
+    private void openAndLoadVets() {
+        open(baseUrl + "/#!/vets");
     }
 }
