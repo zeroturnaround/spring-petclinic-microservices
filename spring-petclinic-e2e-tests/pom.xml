@@ -63,7 +63,7 @@
                             <systemPropertyVariables>
                                 <selenide.browser>chrome</selenide.browser>
                                 <selenide.headless>true</selenide.headless>
-                                <selenide.timeout>620000</selenide.timeout>
+                                <selenide.timeout>30000</selenide.timeout>
                             </systemPropertyVariables>
                             <argLine>-Dspring.profiles.active=jenkins</argLine>
                             <useSystemClassLoader>false</useSystemClassLoader>
