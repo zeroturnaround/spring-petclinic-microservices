@@ -104,6 +104,9 @@ public class VetResourcesITest {
         $(Selectors.byText(editOwner)).should(Condition.exist);
         $(Selectors.byText(editOwner)).click();
 
+        $(Selectors.byText("George")).should(Condition.exist);
+        $(Selectors.byText("Franklin")).should(Condition.exist);
+
         String submit = "Submit";
         $(Selectors.byText(submit)).should(Condition.exist);
         $(Selectors.byText(submit)).click();

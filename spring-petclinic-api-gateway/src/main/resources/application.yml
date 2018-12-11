@@ -1,8 +1,8 @@
 ribbon:
   eager-load:
     enabled: true
-  ReadTimeout: 150000
-  ConnectTimeout: 150000
+  ReadTimeout: 10000
+  ConnectTimeout: 10000
 
 zuul:
   prefix: /api
@@ -30,43 +30,43 @@ hystrix:
       execution:
         isolation:
           thread: 
-            timeoutInMilliseconds: 310000
+            timeoutInMilliseconds: 45000
     vets-service:
       execution:
         isolation:
           thread: 
-            timeoutInMilliseconds: 310000
+            timeoutInMilliseconds: 45000
     visits-service:
       execution:
         isolation:
           thread: 
-            timeoutInMilliseconds: 310000
+            timeoutInMilliseconds: 45000
     customers-service:
       execution:
         isolation:
           thread: 
-            timeoutInMilliseconds: 310000
+            timeoutInMilliseconds: 45000
     api-gateway:
       execution:
         isolation:
           thread: 
-            timeoutInMilliseconds: 310000
+            timeoutInMilliseconds: 45000
 vets-service:
   ribbon:
-    ReadTimeout: 150000
-    ConnectTimeout: 150000
+    ReadTimeout: 10000
+    ConnectTimeout: 10000
 visits-service:
   ribbon:
-    ReadTimeout: 150000
-    ConnectTimeout: 150000
+    ReadTimeout: 10000
+    ConnectTimeout: 10000
 customers-service:
   ribbon:
-    ReadTimeout: 150000
-    ConnectTimeout: 150000
+    ReadTimeout: 10000
+    ConnectTimeout: 10000
 api-gateway:
   ribbon:
-    ReadTimeout: 150000
-    ConnectTimeout: 150000
+    ReadTimeout: 10000
+    ConnectTimeout: 10000
 
 health:
   config:
