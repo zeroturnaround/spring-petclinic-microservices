@@ -1,6 +1,8 @@
 ribbon:
   eager-load:
     enabled: true
+  ReadTimeout: 150000
+  ConnectTimeout: 150000
 
 zuul:
   prefix: /api
@@ -22,10 +24,6 @@ logging:
         springframework:
           cloud:
             netflix: trace
-            
-ribbon:
-  ReadTimeout: 150000
-  ConnectTimeout: 150000
 hystrix:
   command:
     default:
