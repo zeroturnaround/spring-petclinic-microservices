@@ -153,6 +153,9 @@ public class VetResourcesITest {
         findAndOpenVet("Peter Svensson");
         $(Selectors.byText("Edit Vet")).click();
 
+        $(Selectors.byName("firstName")).waitUntil(Condition.value("Peter"), 10000);
+        $(Selectors.byName("lastName")).waitUntil(Condition.value("Svensson"), 10000);
+
         $(Selectors.byName("specialty")).setValue("allergist cardiology dentistry endriconolgy infections internal nesthesiologists neurosurgeon otolaryngology pediatry radiology surgery");
         $(Selectors.byText("Save")).click();
 

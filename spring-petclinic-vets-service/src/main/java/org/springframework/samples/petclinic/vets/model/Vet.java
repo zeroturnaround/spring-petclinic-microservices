@@ -21,19 +21,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.xml.bind.annotation.XmlElement;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
 
@@ -117,5 +109,20 @@ public class Vet {
         getSpecialtiesInternal().clear();
         getSpecialtiesInternal().addAll(specialties);
     }
+
+    @Transient
+    @JsonInclude
+    private Set<OwnerDetails> owners = new HashSet<>();
+
+    public void setOwners(List<OwnerDetails> owners) {
+        this.owners.clear();
+        this.owners.addAll(owners);
+    }
+
+    @XmlElement
+    public Set<OwnerDetails> getOwners() {
+        return owners;
+    }
+
 
 }

@@ -23,11 +23,10 @@ import java.util.List;
 import java.util.Optional;
 
 
-import org.springframework.samples.petclinic.vets.model.Specialty;
-import org.springframework.samples.petclinic.vets.model.SpecialtyRepository;
-import org.springframework.samples.petclinic.vets.model.Vet;
-import org.springframework.samples.petclinic.vets.model.VetRepository;
+import org.springframework.samples.petclinic.vets.model.*;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 
 import javax.validation.Valid;
@@ -42,10 +41,12 @@ import javax.validation.Valid;
 @RequestMapping("/vets")
 @RestController
 @RequiredArgsConstructor
+@Component
 class VetResource {
 
     private final VetRepository vetRepository;
     private final SpecialtyRepository specialtyRepository;
+    private final RestTemplate loadBalancedRestTemplate;
 
 
     @GetMapping
@@ -59,7 +60,9 @@ class VetResource {
      */
     @GetMapping(value = "/{vetId}")
     public Optional<Vet> findVet(@PathVariable("vetId") int vetId) {
+        OwnerDetails[] ownerDetailsList = loadBalancedRestTemplate.getForObject("http://customers-service/owners/", OwnerDetails[].class);
         Optional<Vet> vet = vetRepository.findById(vetId);
+        vet.get().setOwners(Arrays.asList(ownerDetailsList));
         return vet;
     }
 
