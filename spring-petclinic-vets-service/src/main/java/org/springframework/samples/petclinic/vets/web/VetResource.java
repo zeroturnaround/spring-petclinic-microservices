@@ -67,15 +67,15 @@ class VetResource {
      * Update Vet
      */
     @PutMapping(value = "/{vetId}")
-    public Vet updateOwner(@PathVariable("vetId") int vetId, @Valid @RequestBody Vet vetRequest) {
+    public Vet updateOwner(@PathVariable("vetId") int vetId, @Valid @RequestBody Vet vetRequest) throws InterruptedException {
         final Optional<Vet> vet = findVet(vetId);
         final Vet vetModel = vet.get();
         vetModel.setFirstName(vetRequest.getFirstName());
         vetModel.setLastName(vetRequest.getLastName());
         List<Specialty> specialties = new ArrayList<>();
+        List<Specialty> allSpecialties = specialtyRepository.findAll();
         for (Specialty specialty : vetRequest.getSpecialties()) {
             if (!specialty.getName().isEmpty()) {
-                List<Specialty> allSpecialties = specialtyRepository.findAll();
                 boolean foundSpeciality = false;
                 for (Specialty existingSpeciality : allSpecialties) {
                     if (existingSpeciality.getName().equals(specialty.getName())) {
