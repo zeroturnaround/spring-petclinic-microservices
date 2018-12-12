@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.samples.petclinic.api.application.CustomersServiceClient;
+import org.springframework.samples.petclinic.api.application.VetsServiceClient;
 import org.springframework.samples.petclinic.api.dto.OwnerDetails;
 import org.springframework.samples.petclinic.api.application.VisitsServiceClient;
 import org.springframework.samples.petclinic.api.dto.VisitDetails;
@@ -40,6 +41,8 @@ public class ApiGatewayController {
     private final CustomersServiceClient customersServiceClient;
 
     private final VisitsServiceClient visitsServiceClient;
+
+    private final VetsServiceClient vetsServiceClient;
 
     @GetMapping(value = "owners/{ownerId}")
     public OwnerDetails getOwnerDetails(final @PathVariable int ownerId) {
