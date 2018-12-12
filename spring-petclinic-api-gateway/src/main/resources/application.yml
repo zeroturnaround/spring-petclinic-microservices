@@ -71,3 +71,10 @@ api-gateway:
 health:
   config:
     enabled: false
+management:
+   endpoints:
+       web:
+         exposure:
+           include: routes
+       routes:
+         enabled: true
