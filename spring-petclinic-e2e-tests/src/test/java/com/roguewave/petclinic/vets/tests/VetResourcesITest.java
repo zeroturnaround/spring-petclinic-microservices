@@ -146,6 +146,64 @@ public class VetResourcesITest {
         $(Selectors.byText("Save")).click();
     }
 
+    @Test
+    public void testVetEditAndAddMultipleSpecialty() {
+        openAndLoadVets();
+
+        findAndOpenVet("Peter Svensson");
+        $(Selectors.byText("Edit Vet")).click();
+
+        $(Selectors.byName("specialty")).setValue("allergist cardiology dentistry endriconolgy infections internal nesthesiologists neurosurgeon otolaryngology pediatry radiology surgery");
+        $(Selectors.byText("Save")).click();
+
+        findAndOpenVet("Peter Svensson");
+        $(Selectors.byText("allergist")).should(Condition.exist);
+        $(Selectors.byText("cardiology")).should(Condition.exist);
+        $(Selectors.byText("dentistry")).should(Condition.exist);
+        $(Selectors.byText("infections")).should(Condition.exist);
+        $(Selectors.byText("endriconolgy")).should(Condition.exist);
+        $(Selectors.byText("internal")).should(Condition.exist);
+        $(Selectors.byText("nesthesiologists")).should(Condition.exist);
+        $(Selectors.byText("otolaryngology")).should(Condition.exist);
+        $(Selectors.byText("neurosurgeon")).should(Condition.exist);
+        $(Selectors.byText("otolaryngology")).should(Condition.exist);
+        $(Selectors.byText("pediatry")).should(Condition.exist);
+        $(Selectors.byText("internal")).should(Condition.exist);
+        $(Selectors.byText("radiology")).should(Condition.exist);
+        $(Selectors.byText("surgery")).should(Condition.exist);
+        $(Selectors.byText("Edit Vet")).click();
+
+        $(Selectors.byName("specialty")).setValue("radiology");
+        $(Selectors.byText("Save")).click();
+    }
+
+    @Test
+    public void testVetEditAndAddSpecialty() {
+        openAndLoadVets();
+
+        findAndOpenVet("Henry Stevens");
+        $(Selectors.byText("Edit Vet")).click();
+
+        $(Selectors.byName("firstName")).waitUntil(Condition.value("Henry"), 10000);
+        $(Selectors.byName("lastName")).waitUntil(Condition.value("Stevens"), 10000);
+
+        $(Selectors.byName("specialty")).setValue("radiology surgery general");
+        $(Selectors.byText("Save")).click();
+
+        findAndOpenVet("Henry Stevens");
+
+        $(Selectors.byText("radiology")).should(Condition.exist);
+        $(Selectors.byText("surgery")).should(Condition.exist);
+        $(Selectors.byText("general")).should(Condition.exist);
+        $(Selectors.byText("Edit Vet")).click();
+
+        $(Selectors.byName("firstName")).waitUntil(Condition.value("Henry"), 10000);
+        $(Selectors.byName("lastName")).waitUntil(Condition.value("Stevens"), 10000);
+
+        $(Selectors.byName("specialty")).setValue("radiology");
+        $(Selectors.byText("Save")).click();
+    }
+
     private void findAndOpenVet(String vetName) {
         $(Selectors.byText(vetName)).should(Condition.exist);
         $(Selectors.byText(vetName)).click();
