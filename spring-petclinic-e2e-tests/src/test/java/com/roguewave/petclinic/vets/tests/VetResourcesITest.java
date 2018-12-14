@@ -12,6 +12,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.junit.FixMethodOrder;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runners.MethodSorters;
@@ -41,15 +42,15 @@ public class VetResourcesITest {
 
     private static boolean eurekaRootsAvailable = false;
 
-    @BeforeAll
-    public static void setUp() {
+    @BeforeEach
+    public void setUp() {
         if (eurekaRootsAvailable)
             return;
 
         System.out.println(VetResourcesITest.class + " setUp() method called!");
 
         HttpClient httpClient = HttpClients.createDefault();
-        HttpPost httpPost = new HttpPost("http://localhost:8080/actuator/routes");
+        HttpPost httpPost = new HttpPost(baseUrl + "/actuator/routes");
 
         try {
             HttpResponse httpResponse = httpClient.execute(httpPost);
