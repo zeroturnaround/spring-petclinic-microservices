@@ -1,12 +1,15 @@
 package com.roguewave.petclinic.vets.tests;
 
 
-import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selectors;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.junit.FixMethodOrder;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -36,23 +39,36 @@ public class VetResourcesITest {
     @Value("${baseUrl}")
     public String baseUrl;
 
-    private static boolean setUpCalled = false;
+    private static boolean eurekaRootsAvailable = false;
 
     @BeforeAll
     public static void setUp() {
-        if (setUpCalled)
+        if (eurekaRootsAvailable)
             return;
 
         System.out.println(VetResourcesITest.class + " setUp() method called!");
 
         HttpClient httpClient = HttpClients.createDefault();
-        HttpPost httpPost = new HttpPost("http://localhost:8080/actuator/roots");
+        HttpPost httpPost = new HttpPost("http://localhost:8080/actuator/routes");
 
         try {
-            httpClient.execute(httpPost);
-            setUpCalled = true;
+            HttpResponse httpResponse = httpClient.execute(httpPost);
+
+            if (httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+                HttpEntity httpEntity = httpResponse.getEntity();
+                String response = EntityUtils.toString(httpEntity, "UTF-8");
+                eurekaRootsAvailable = response.contains("vets-service") && response.contains("visits-service") && response.contains("customers-service");
+
+                System.out.println(VetResourcesITest.class + " Eureka Available starting with tests!");
+            }
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            if (!eurekaRootsAvailable) {
+                sleep(30000);
+                System.out.println(VetResourcesITest.class + " Eureka Not Available waiting 30seconds!");
+                setUp();
+            }
         }
     }
 
