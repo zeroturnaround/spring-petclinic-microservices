@@ -4,6 +4,9 @@ package com.roguewave.petclinic.vets.tests;
 import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selectors;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.HttpClients;
 import org.junit.FixMethodOrder;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -14,6 +17,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+
+import java.io.IOException;
 
 import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.Condition.*;
@@ -31,13 +36,33 @@ public class VetResourcesITest {
     @Value("${baseUrl}")
     public String baseUrl;
 
+    private static boolean setUpCalled = false;
+
+    @BeforeAll
+    public static void setUp() {
+        if (setUpCalled)
+            return;
+
+        System.out.println(VetResourcesITest.class + " setUp() method called!");
+
+        HttpClient httpClient = HttpClients.createDefault();
+        HttpPost httpPost = new HttpPost("http://localhost:8080/actuator/roots");
+
+        try {
+            httpClient.execute(httpPost);
+            setUpCalled = true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     @Test
     public void testNavigationForward() {
         beforeTest();
         open(baseUrl + "/#!/welcome");
 
-        System.out.println("");
+        System.out.println("TestNavigationForward ");
         $(By.tagName("title")).shouldBe(exist);
 
         assertEquals(baseUrl + "/#!/welcome", url());
@@ -257,7 +282,7 @@ public class VetResourcesITest {
         $(Selectors.byText(vetName)).click();
 
         $(Selectors.byText("Veterinarian")).should(Condition.exist);
-        $(Selectors.byText(vetName)).waitUntil(Condition.exist, 10000);
+        $(Selectors.byText(vetName)).waitUntil(Condition.exist, 20000);
     }
 
     private void openAndLoadVets() {
