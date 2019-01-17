@@ -87,4 +87,4 @@ networks:
   # https://forums.docker.com/t/set-default-network-name-for-compose/36779/2
   # https://docs.docker.com/compose/compose-file/#name-1
   qrebel-demo-env:
-
+    name: qrebel-demo-env-net
