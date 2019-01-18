@@ -7,7 +7,9 @@ services:
     ports:
      - 8888:8888
     entrypoint: ["java", "-javaagent:/qrebel-agent.jar", "-Dqrebel.auth_token=${QREBEL_AUTH_TOKEN}", "-Dqrebel.app.name=spring-petclinic-config-server", "-XX:+UnlockExperimentalVMOptions", "-XX:+UseCGroupMemoryLimitForHeap", "-Djava.security.egd=file:/dev/./urandom", "-jar","/app.jar"]
-    
+    networks:
+      - qrebel-demo-env
+
 
   discovery-server:
     image: mszarlinski/spring-petclinic-discovery-server
@@ -18,7 +20,9 @@ services:
     entrypoint: ["./dockerize","-wait=tcp://config-server:8888","-timeout=60s","--","java", "-javaagent:/qrebel-agent.jar", "-Dqrebel.auth_token=${QREBEL_AUTH_TOKEN}", "-Dqrebel.app.name=spring-petclinic-discovery-server", "-XX:+UnlockExperimentalVMOptions", "-XX:+UseCGroupMemoryLimitForHeap", "-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
     ports:
      - 8761:8761
- 
+    networks:
+      - qrebel-demo-env
+
   customers-service:
     image: mszarlinski/spring-petclinic-customers-service
     container_name: customers-service
@@ -29,6 +33,8 @@ services:
     entrypoint: ["./dockerize","-wait=tcp://discovery-server:8761","-timeout=60s","--","java","-javaagent:/qrebel-agent.jar", "-Dqrebel.auth_token=${QREBEL_AUTH_TOKEN}", "-Dqrebel.app.name=spring-petclinic-customers-service","-XX:+UnlockExperimentalVMOptions", "-XX:+UseCGroupMemoryLimitForHeap", "-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
     ports:
     - 8081:8081
+    networks:
+      - qrebel-demo-env
 
   visits-service:
     image: mszarlinski/spring-petclinic-visits-service
@@ -40,6 +46,8 @@ services:
     entrypoint: ["./dockerize","-wait=tcp://discovery-server:8761","-timeout=60s","--","java", "-javaagent:/qrebel-agent.jar", "-Dqrebel.auth_token=${QREBEL_AUTH_TOKEN}", "-Dqrebel.app.name=spring-petclinic-visits-service","-XX:+UnlockExperimentalVMOptions", "-XX:+UseCGroupMemoryLimitForHeap", "-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
     ports:
      - 8082:8082
+    networks:
+      - qrebel-demo-env
 
   vets-service:
     image: mszarlinski/spring-petclinic-vets-service
@@ -51,6 +59,8 @@ services:
     entrypoint: ["./dockerize","-wait=tcp://discovery-server:8761","-timeout=60s","--","java", "-javaagent:/qrebel-agent.jar", "-Dqrebel.auth_token=${QREBEL_AUTH_TOKEN}", "-Dqrebel.app.name=spring-petclinic-vets-service","-XX:+UnlockExperimentalVMOptions", "-XX:+UseCGroupMemoryLimitForHeap", "-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
     ports:
      - 8083:8083
+    networks:
+      - qrebel-demo-env
 
   api-gateway:
     image: mszarlinski/spring-petclinic-api-gateway
@@ -62,6 +72,8 @@ services:
     entrypoint: ["./dockerize","-wait=tcp://discovery-server:8761","-timeout=60s","--","java", "-javaagent:/qrebel-agent.jar", "-Dqrebel.auth_token=${QREBEL_AUTH_TOKEN}", "-Dqrebel.app.name=spring-petclinic-api-gateway", "-XX:+UnlockExperimentalVMOptions", "-XX:+UseCGroupMemoryLimitForHeap", "-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
     ports:
      - 8080:8080
+    networks:
+      - qrebel-demo-env
 
   tracing-server:
     image: openzipkin/zipkin
@@ -71,6 +83,8 @@ services:
     - JAVA_OPTS=-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -Djava.security.egd=file:/dev/./urandom
     ports:
      - 9411:9411
+    networks:
+      - qrebel-demo-env
 
   admin-server:
     image: mszarlinski/spring-petclinic-admin-server
@@ -82,6 +96,8 @@ services:
     entrypoint: ["./dockerize","-wait=tcp://discovery-server:8761","-timeout=60s","--","java", "-XX:+UnlockExperimentalVMOptions", "-XX:+UseCGroupMemoryLimitForHeap", "-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
     ports:
      - 9090:9090
+    networks:
+      - qrebel-demo-env
 
 networks:
   # https://forums.docker.com/t/set-default-network-name-for-compose/36779/2
