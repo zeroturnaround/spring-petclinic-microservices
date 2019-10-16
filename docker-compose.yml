@@ -1,12 +1,23 @@
 version: '3.5'
 services:
+
+#  jrebel:
+#    image: jrebel-alpine
+#    container_name: jrebel-init
+#    volumes:
+#      - jrebel-volume:/jrebel
+#
+#  volumes:
+#    jrebel-volume: {}
+#
+
   config-server:
     image: mszarlinski/spring-petclinic-config-server
     container_name: config-server
 #    mem_limit: 512M
     ports:
      - 8888:8888
-    entrypoint: ["java", "-javaagent:/qrebel-agent.jar", "-Dqrebel.auth_token=${QREBEL_AUTH_TOKEN}", "-Dqrebel.app.name=spring-petclinic-config-server", "-XX:+UnlockExperimentalVMOptions", "-XX:+UseCGroupMemoryLimitForHeap", "-Djava.security.egd=file:/dev/./urandom", "-jar","/app.jar"]
+    entrypoint: ["java", "-XX:+UnlockExperimentalVMOptions", "-XX:+UseCGroupMemoryLimitForHeap", "-Djava.security.egd=file:/dev/./urandom", "-jar","/app.jar"]
     networks:
       - qrebel-demo-env
 
@@ -17,7 +28,7 @@ services:
 #    mem_limit: 512M
     depends_on:
       - config-server
-    entrypoint: ["./dockerize","-wait=tcp://config-server:8888","-timeout=60s","--","java", "-javaagent:/qrebel-agent.jar", "-Dqrebel.auth_token=${QREBEL_AUTH_TOKEN}", "-Dqrebel.app.name=spring-petclinic-discovery-server", "-XX:+UnlockExperimentalVMOptions", "-XX:+UseCGroupMemoryLimitForHeap", "-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
+    entrypoint: ["./dockerize","-wait=tcp://config-server:8888","-timeout=60s","--","java", "-XX:+UnlockExperimentalVMOptions", "-XX:+UseCGroupMemoryLimitForHeap", "-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
     ports:
      - 8761:8761
     networks:
@@ -30,11 +41,13 @@ services:
     depends_on:
      - config-server
      - discovery-server
-    entrypoint: ["./dockerize","-wait=tcp://discovery-server:8761","-timeout=60s","--","java","-javaagent:/qrebel-agent.jar", "-Dqrebel.auth_token=${QREBEL_AUTH_TOKEN}", "-Dqrebel.app.name=spring-petclinic-customers-service","-XX:+UnlockExperimentalVMOptions", "-XX:+UseCGroupMemoryLimitForHeap", "-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
+    entrypoint: ["./dockerize","-wait=tcp://discovery-server:8761","-timeout=60s","--","java", "-agentpath:/jrebel/lib/libjrebel64.so", "-Drebel.remoting_plugin=true", "-javaagent:/xrebel/xrebel.jar", "-XX:+UnlockExperimentalVMOptions", "-XX:+UseCGroupMemoryLimitForHeap", "-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
     ports:
     - 8081:8081
     networks:
       - qrebel-demo-env
+#    volumes:
+#      - jrebel-volume:/jrebel
 
   visits-service:
     image: mszarlinski/spring-petclinic-visits-service
@@ -43,7 +56,7 @@ services:
     depends_on:
      - config-server
      - discovery-server
-    entrypoint: ["./dockerize","-wait=tcp://discovery-server:8761","-timeout=60s","--","java", "-javaagent:/qrebel-agent.jar", "-Dqrebel.auth_token=${QREBEL_AUTH_TOKEN}", "-Dqrebel.app.name=spring-petclinic-visits-service","-XX:+UnlockExperimentalVMOptions", "-XX:+UseCGroupMemoryLimitForHeap", "-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
+    entrypoint: ["./dockerize","-wait=tcp://discovery-server:8761","-timeout=60s","--","java", "-agentpath:/jrebel/lib/libjrebel64.so", "-Drebel.remoting_plugin=true", "-javaagent:/xrebel/xrebel.jar", "-XX:+UnlockExperimentalVMOptions", "-XX:+UseCGroupMemoryLimitForHeap", "-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
     ports:
      - 8082:8082
     networks:
@@ -56,7 +69,7 @@ services:
     depends_on:
      - config-server
      - discovery-server
-    entrypoint: ["./dockerize","-wait=tcp://discovery-server:8761","-timeout=60s","--","java", "-javaagent:/qrebel-agent.jar", "-Dqrebel.auth_token=${QREBEL_AUTH_TOKEN}", "-Dqrebel.app.name=spring-petclinic-vets-service","-XX:+UnlockExperimentalVMOptions", "-XX:+UseCGroupMemoryLimitForHeap", "-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
+    entrypoint: ["./dockerize","-wait=tcp://discovery-server:8761","-timeout=60s","--","java", "-agentpath:/jrebel/lib/libjrebel64.so", "-Drebel.remoting_plugin=true", "-javaagent:/xrebel/xrebel.jar",  "-XX:+UnlockExperimentalVMOptions", "-XX:+UseCGroupMemoryLimitForHeap", "-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
     ports:
      - 8083:8083
     networks:
@@ -69,7 +82,7 @@ services:
     depends_on:
      - config-server
      - discovery-server
-    entrypoint: ["./dockerize","-wait=tcp://discovery-server:8761","-timeout=60s","--","java", "-javaagent:/qrebel-agent.jar", "-Dqrebel.auth_token=${QREBEL_AUTH_TOKEN}", "-Dqrebel.app.name=spring-petclinic-api-gateway", "-XX:+UnlockExperimentalVMOptions", "-XX:+UseCGroupMemoryLimitForHeap", "-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
+    entrypoint: ["./dockerize","-wait=tcp://discovery-server:8761","-timeout=60s","--","java",  "-agentpath:/jrebel/lib/libjrebel64.so", "-Drebel.remoting_plugin=true", "-javaagent:/xrebel/xrebel.jar",  "-XX:+UnlockExperimentalVMOptions", "-XX:+UseCGroupMemoryLimitForHeap", "-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
     ports:
      - 8080:8080
     networks:
